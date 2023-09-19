@@ -1,0 +1,18 @@
+{
+    "name": "admin/php-project",
+    "description": "tracking expense",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Ameer",
+            "email": "ameerbsc2630@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "src/Framework",
+            "App\\": "src/App"
+        }
+    }
+}
