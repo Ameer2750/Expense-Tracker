@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Framework;
 
-use ReflectionClass;
+use ReflectionClass, ReflectionNamedType;
 use Framework\Exceptions\ContainerException;
 
 class Container
@@ -24,6 +24,47 @@ class Container
             throw new ContainerException("class {$className} is Not Instantiable");
         }
 
-        dd($reflectionClass);
+        $constructor = $reflectionClass->getConstructor();
+
+        if (!$constructor) {
+            return new $className;
+        }
+
+        $params = $constructor->getParameters();
+
+        if (count($params) === 0) {
+            return new $className;
+        }
+
+        $dependencies = [];
+
+        foreach ($params as $param) {
+            $name = $param->getName();
+            $type = $param->getType();
+
+            if (!$type) {
+                throw new ContainerException("Failed to Resolve Class {$className}, param {$name} is missing as type hint.");
+            };
+
+            if (!$type instanceof ReflectionNamedType || $type->isBuiltin()) {
+                throw new ContainerException("Failed to Resolve Class {$className} because invalid param name.");
+            }
+
+            $dependencies[] = $this->get($type->getName());
+        }
+
+        return $reflectionClass->newInstanceArgs($dependencies);
+    }
+
+    public function get(string $id)
+    {
+        if (!array_key_exists($id, $this->definitions)) {
+            throw new ContainerException("class {$id} does not exist in container.");
+        }
+
+        $factory = $this->definitions[$id];
+        $dependency = $factory();
+
+        return $dependency;
     }
 }
