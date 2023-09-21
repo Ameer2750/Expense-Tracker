@@ -1,6 +1,5 @@
 <?php
 
-
 declare(strict_types=1);
 
 namespace App\Services;
@@ -20,6 +19,14 @@ class ValidatorService
 
     public function validateRegister(array $formData)
     {
-        $this->validator->validate($formData);
+        $this->validator->validate($formData, [
+            'email' => ['required'],
+            'age' => ['required'],
+            'country' => ['required'],
+            'socialMediaUrl' => ['required'],
+            'password' => ['required'],
+            'confirmPassword' => ['required'],
+            'tos' => ['required'],
+        ]);
     }
 }
