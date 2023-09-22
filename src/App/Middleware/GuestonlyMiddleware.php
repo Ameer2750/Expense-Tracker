@@ -10,6 +10,7 @@ class GuestOnlyMiddleware implements MiddlewareInterface
 {
     public function process(callable $next)
     {
+
         $next();
     }
 }
