@@ -62,6 +62,8 @@ class UserService
             throw new ValidationException(['password' => ['Invalid Credentials']]);
         }
 
+        session_regenerate_id();
+
         $_SESSION['user'] =  $user['id'];
     }
 }
