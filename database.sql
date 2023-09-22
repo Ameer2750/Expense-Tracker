@@ -10,3 +10,16 @@ CREATE TABLE IF NOT EXISTS users (
     PRIMARY KEY(id),
     UNIQUE KEY(email)
 );
+
+
+CREATE TABLE IF NOT EXISTS transactions (
+    id bigint(20) NOT NULL AUTO_INCREMENT,
+    description VARCHAR(255) NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    date DATETIME NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    user_id BIGINT(20) NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
