@@ -36,8 +36,6 @@ class Database
 
     public function query(string $query, array $params = []): Database
     {
-        var_dump($params);
-        var_dump($query);
 
         $this->stmt = $this->connection->prepare($query);
 
