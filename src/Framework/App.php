@@ -16,7 +16,7 @@ class App
 
         if ($containerDefinitionsPath) {
             $containerDefinitions = include $containerDefinitionsPath;
-            $this->container->addDefintions($containerDefinitions);
+            $this->container->addDefinitions($containerDefinitions);
         }
     }
 
@@ -42,6 +42,13 @@ class App
         return $this;
     }
 
+    public function delete(string $path, array $controller): App
+    {
+        $this->router->add('DELETE', $path, $controller);
+
+        return $this;
+    }
+
     public function addMiddleware(string $middleware)
     {
         $this->router->addMiddleware($middleware);
@@ -51,4 +58,9 @@ class App
     {
         $this->router->addRouteMiddleware($middleware);
     }
+
+    //     public function setErrorHandler(array $controller)
+    //     {
+    //         $this->router->setErrorHandler($controller);
+    //     }
 }

@@ -12,7 +12,7 @@ class TemplateEngine
     {
     }
 
-    public function  render(string $template, array $data = [])
+    public function render(string $template, array $data = [])
     {
         extract($data, EXTR_SKIP);
         extract($this->globalTemplateData, EXTR_SKIP);

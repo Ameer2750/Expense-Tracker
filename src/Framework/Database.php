@@ -17,26 +17,21 @@ class Database
         string $username,
         string $password
     ) {
-        $config = http_build_query(
-            data: $config,
-            arg_separator: ';'
-        );
+        $config = http_build_query(data: $config, arg_separator: ';');
 
         $dsn = "{$driver}:{$config}";
-
 
         try {
             $this->connection = new PDO($dsn, $username, $password, [
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
             ]);
         } catch (PDOException $e) {
-            die("unable to connect database.");
+            die("Unable to connect to database");
         }
     }
 
     public function query(string $query, array $params = []): Database
     {
-
         $this->stmt = $this->connection->prepare($query);
 
         $this->stmt->execute($params);

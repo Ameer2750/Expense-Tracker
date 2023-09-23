@@ -12,9 +12,9 @@ class Container
     private array $definitions = [];
     private array $resolved = [];
 
-    public function addDefintions(array $newDefinition)
+    public function addDefinitions(array $newDefinitions)
     {
-        $this->definitions = [...$this->definitions, ...$newDefinition];
+        $this->definitions = [...$this->definitions, ...$newDefinitions];
     }
 
     public function resolve(string $className)
@@ -22,7 +22,7 @@ class Container
         $reflectionClass = new ReflectionClass($className);
 
         if (!$reflectionClass->isInstantiable()) {
-            throw new ContainerException("class {$className} is Not Instantiable");
+            throw new ContainerException("Class {$className} is not instantiable");
         }
 
         $constructor = $reflectionClass->getConstructor();
@@ -44,11 +44,11 @@ class Container
             $type = $param->getType();
 
             if (!$type) {
-                throw new ContainerException("Failed to Resolve Class {$className}, param {$name} is missing as type hint.");
-            };
+                throw new ContainerException("Failed to resolve class {$className} because param {$name} is missing a type hint.");
+            }
 
             if (!$type instanceof ReflectionNamedType || $type->isBuiltin()) {
-                throw new ContainerException("Failed to Resolve Class {$className} because invalid param name.");
+                throw new ContainerException("Failed to resolve class {$className} because invalid param name.");
             }
 
             $dependencies[] = $this->get($type->getName());
@@ -60,7 +60,7 @@ class Container
     public function get(string $id)
     {
         if (!array_key_exists($id, $this->definitions)) {
-            throw new ContainerException("class {$id} does not exist in container.");
+            throw new ContainerException("Class {$id} does not exist in container.");
         }
 
         if (array_key_exists($id, $this->resolved)) {
