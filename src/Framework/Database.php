@@ -41,8 +41,6 @@ class Database
 
         $this->stmt->execute($params);
 
-
-
         return $this;
     }
 
