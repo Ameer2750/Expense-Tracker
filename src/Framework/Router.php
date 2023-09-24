@@ -77,7 +77,7 @@ class Router
             return;
         }
 
-        // $this->dispatchNotFound($container);
+        $this->dispatchNotFound($container);
     }
 
     public function addMiddleware(string $middleware)
@@ -91,24 +91,24 @@ class Router
         $this->routes[$lastRouteKey]['middlewares'][] = $middleware;
     }
 
-    // public function setErrorHandler(array $controller)
-    // {
-    //     $this->errorHandler = $controller;
-    // }
+    public function setErrorHandler(array $controller)
+    {
+        $this->errorHandler = $controller;
+    }
 
-    // public function dispatchNotFound(?Container $container)
-    // {
-    //     [$class, $function] = $this->errorHandler;
+    public function dispatchNotFound(?Container $container)
+    {
+        [$class, $function] = $this->errorHandler;
 
-    //     $controllerInstance = $container ? $container->resolve($class) : new $class;
+        $controllerInstance = $container ? $container->resolve($class) : new $class;
 
-    //     $action = fn () => $controllerInstance->$function();
+        $action = fn () => $controllerInstance->$function();
 
-    //     foreach ($this->middlewares as $middleware) {
-    //         $middlewareInstance = $container ? $container->resolve($middleware) : new $middleware;
-    //         $action = fn () => $middlewareInstance->process($action);
-    //     }
+        foreach ($this->middlewares as $middleware) {
+            $middlewareInstance = $container ? $container->resolve($middleware) : new $middleware;
+            $action = fn () => $middlewareInstance->process($action);
+        }
 
-    //     $action();
-    // }
+        $action();
+    }
 }
